@@ -1,6 +1,7 @@
 ﻿using InvoiceManagementSystem.Domain.Common;
 using InvoiceManagementSystem.Domain.Entities;
 using InvoiceManagementSystem.Infrastructure.Interfaces;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         private readonly ICurrentUserService _currentUserService;
 
