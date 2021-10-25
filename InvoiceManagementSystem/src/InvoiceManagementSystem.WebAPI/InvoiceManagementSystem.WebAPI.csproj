@@ -12,4 +12,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\InvoiceManagementSystem.Application\InvoiceManagementSystem.Application.csproj" />
+  </ItemGroup>
+
 </Project>

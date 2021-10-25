@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\InvoiceManagementSystem.Domain\InvoiceManagementSystem.Domain.csproj" />
+    <ProjectReference Include="..\InvoiceManagementSystem.Infrastructure\InvoiceManagementSystem.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
