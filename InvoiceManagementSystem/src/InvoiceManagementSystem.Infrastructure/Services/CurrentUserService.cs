@@ -6,6 +6,10 @@ namespace InvoiceManagementSystem.Infrastructure.Services
 {
     public class CurrentUserService : ICurrentUserService
     {
+        public CurrentUserService()
+        {
+        }
+
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
             UserId = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
