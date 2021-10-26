@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Invoices\Validators\" />
     <Folder Include="Features\Invoices\Queries\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>

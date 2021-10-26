@@ -7,7 +7,7 @@ namespace InvoiceManagementSystem.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BaseApiController : ControllerBase
+    public abstract class BaseApiController : ControllerBase
     {
         private IMediator _mediator;
 
