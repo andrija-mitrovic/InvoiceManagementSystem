@@ -1,11 +1,10 @@
-﻿using InvoiceManagementSystem.Domain.Common;
-using InvoiceManagementSystem.Domain.Enums;
+﻿using InvoiceManagementSystem.Domain.Enums;
 using System;
 using System.Collections.Generic;
 
-namespace InvoiceManagementSystem.Domain.Entities
+namespace InvoiceManagementSystem.Application.DTOs
 {
-    public class Invoice : AuditEntity<int>
+    public class InvoiceDto
     {
         public string InvoiceNumber { get; set; }
         public string Logo { get; set; }
@@ -19,6 +18,6 @@ namespace InvoiceManagementSystem.Domain.Entities
         public double Tax { get; set; }
         public TaxType TaxType { get; set; }
         public double AmountPaid { get; set; }
-        public ICollection<InvoiceItem> InvoiceItems { get; set; } = new List<InvoiceItem>();
+        public ICollection<InvoiceItemDto> InvoiceItems { get; set; } = new List<InvoiceItemDto>();
     }
 }
