@@ -1,5 +1,6 @@
 ﻿using InvoiceManagementSystem.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,15 @@ namespace InvoiceManagementSystem.Infrastructure.Data
 {
     public class ApplicationDbContextSeed
     {
-        public static async Task SeedDataAsync(ApplicationDbContext context, 
-            UserManager<AppUser> userManager, 
-            CancellationToken cancellationToken)
+        public static async Task SeedDataAsync(ApplicationDbContext context,
+            UserManager<AppUser> userManager,
+            CancellationToken cancellationToken,
+            ILogger logger)
         {
             if (!userManager.Users.Any())
             {
+                logger.LogInformation("ApplicationDbContextSeed.SeedDataAsync - Seeding data started.");
+
                 var users = new List<AppUser>
                 {
                     new AppUser
@@ -27,16 +31,18 @@ namespace InvoiceManagementSystem.Infrastructure.Data
                     new AppUser
                     {
                         UserName="andrija",
-                        Email="andrija.mitrovic9@gmail.com"
+                        Email="andrija@gmail.com"
                     }
                 };
 
-                foreach(var user in users)
+                foreach (var user in users)
                 {
-                    await userManager.CreateAsync(user, "Password");
+                    await userManager.CreateAsync(user, "Password123!");
                 }
 
                 await context.SaveChangesAsync(cancellationToken);
+
+                logger.LogInformation("ApplicationDbContextSeed.SeedDataAsync - Seeding data finished.");
             }
         }
     }

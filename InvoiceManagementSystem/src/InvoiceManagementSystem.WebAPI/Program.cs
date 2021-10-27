@@ -26,14 +26,14 @@ namespace InvoiceManagementSystem.WebAPI
 
             try
             {
-                logger.LogInformation("Program.Main - Seeding data started.");
+                logger.LogInformation("Program.Main - migration started.");
 
                 var context = services.GetRequiredService<ApplicationDbContext>();
-                //var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
                 await context.Database.MigrateAsync();
-               // await ApplicationDbContextSeed.SeedDataAsync(context, userManager, CancellationToken.None);
+                await ApplicationDbContextSeed.SeedDataAsync(context, userManager, CancellationToken.None, logger);
 
-                logger.LogInformation("Program.Main - Seeding data finished.");
+                logger.LogInformation("Program.Main - migration finished.");
             }
             catch (Exception ex)
             {
