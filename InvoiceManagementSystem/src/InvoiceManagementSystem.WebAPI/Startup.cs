@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace InvoiceManagementSystem.WebAPI
 {
@@ -24,11 +23,7 @@ namespace InvoiceManagementSystem.WebAPI
         {
             services.AddInfrastructure(_config);
             services.AddApplication(_config);
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "InvoiceManagementSystem.WebAPI", Version = "v1" });
-            });
+            services.AddWebAPI();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +40,9 @@ namespace InvoiceManagementSystem.WebAPI
 
             app.UseRouting();
 
+            app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

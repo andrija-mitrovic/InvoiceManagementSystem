@@ -1,6 +1,7 @@
 ﻿using InvoiceManagementSystem.Application.DTOs;
 using InvoiceManagementSystem.Application.Services;
 using InvoiceManagementSystem.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.WebAPI.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
