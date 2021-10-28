@@ -22,6 +22,8 @@ namespace InvoiceManagementSystem.Infrastructure.Data
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
 
+        public DbSet<Client> Clients { get; set; }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             foreach(var entry in ChangeTracker.Entries<AuditEntity<int>>())
