@@ -2,7 +2,6 @@
 {
     public class InvoiceItemDto
     {
-        public int Id { get; set; }
         public string Item { get; set; }
         public double Quantity { get; set; }
         public double Rate { get; set; }
