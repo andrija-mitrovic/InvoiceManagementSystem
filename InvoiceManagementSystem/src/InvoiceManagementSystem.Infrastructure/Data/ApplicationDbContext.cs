@@ -21,8 +21,8 @@ namespace InvoiceManagementSystem.Infrastructure.Data
 
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
-
         public DbSet<Client> Clients { get; set; }
+        public DbSet<CompanyInfo> CompanyInfo { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
