@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.Features.Clients.Command;
-using InvoiceManagementSystem.Domain.Entities;
 using InvoiceManagementSystem.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +28,7 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
         {
             _logger.LogInformation($"EditClientCommandHandler.Handle - Editing client with Id={request.Id}.");
 
-            var client = await _context.Clients.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var client = await _context.Clients.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (client == null)
             {

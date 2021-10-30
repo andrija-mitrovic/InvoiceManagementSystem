@@ -24,7 +24,7 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
         {
             _logger.LogInformation($"DeleteClientCommandHandler.Handle - Deleting client with Id={request.Id}");
 
-            var client = await _context.Clients.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var client = await _context.Clients.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (client == null)
             {
