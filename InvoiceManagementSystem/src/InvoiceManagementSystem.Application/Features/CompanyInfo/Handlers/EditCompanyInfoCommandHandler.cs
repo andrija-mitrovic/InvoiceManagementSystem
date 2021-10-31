@@ -30,7 +30,7 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
         {
             _logger.LogInformation($"EditCompanyInfoCommandHandler.Handle - Editing company information with Id={request.Id}");
 
-            var companyInfo = await _context.CompanyInfo.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var companyInfo = await _context.CompanyInfo.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (companyInfo == null)
             {
