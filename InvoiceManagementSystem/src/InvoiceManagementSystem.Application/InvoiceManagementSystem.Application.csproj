@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\CompanyInfo\Command\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>
 
