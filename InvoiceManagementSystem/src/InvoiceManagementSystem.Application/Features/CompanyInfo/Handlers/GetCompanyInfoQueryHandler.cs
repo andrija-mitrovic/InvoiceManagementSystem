@@ -24,7 +24,16 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
         {
             _logger.LogInformation("GetCompanyInfoQueryHandler.Handle - Retreiving company information");
 
-            return await _context.CompanyInfo.FirstOrDefaultAsync();
+            var information = await _context.CompanyInfo.FirstOrDefaultAsync(cancellationToken);
+
+            if (information == null)
+            {
+                _logger.LogError("GetCompanyInfoQueryHandler.Handle - Company information couldn't be found.");
+                return null;
+            }
+
+            _logger.LogInformation("GetCompanyInfoQueryHandler.Handle - Company information successfully returned.");
+            return information;
         }
     }
 }

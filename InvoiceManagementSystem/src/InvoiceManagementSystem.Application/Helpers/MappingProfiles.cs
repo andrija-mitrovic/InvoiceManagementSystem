@@ -13,6 +13,8 @@ namespace InvoiceManagementSystem.Application.Helpers
 
             CreateMap<InvoiceItem, InvoiceItemDto>();
             CreateMap<InvoiceItemDto, InvoiceItem>();
+
+            CreateMap<CompanyInfo, CompanyInfo>();
         }
     }
 }
