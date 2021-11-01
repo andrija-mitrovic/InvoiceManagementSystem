@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.Features.Clients.Command;
+using InvoiceManagementSystem.Application.Helpers;
 using InvoiceManagementSystem.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
 {
-    public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Unit>
+    public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -24,7 +25,7 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
             _logger = logger;
         }
 
-        public async Task<Unit> Handle(EditClientCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(EditClientCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"EditClientCommandHandler.Handle - Editing client with Id={request.Id}.");
 
@@ -33,7 +34,7 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
             if (client == null)
             {
                 _logger.LogError($"DeleteClientCommandHandler.Handle - Client with Id={request.Id} couldn't be found.");
-                return Unit.Value;
+                return Result<Unit>.Failure("No client");
             }
 
             _mapper.Map(request.Client, client);
@@ -43,11 +44,11 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
             if (!result)
             {
                 _logger.LogError($"DeleteClientCommandHandler.Handle - Failed to update client with Id={request.Id}");
-                return Unit.Value;
+                return Result<Unit>.Failure("Failed to update client");
             }
 
             _logger.LogInformation($"DeleteClientCommandHandler.Handle - Successfully updated client with Id={request.Id}");
-            return Unit.Value;
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }

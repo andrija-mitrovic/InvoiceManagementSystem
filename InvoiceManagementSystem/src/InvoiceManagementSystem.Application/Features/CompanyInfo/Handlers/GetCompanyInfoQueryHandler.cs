@@ -1,4 +1,5 @@
 ﻿using InvoiceManagementSystem.Application.Features.CompanyInfo.Queries;
+using InvoiceManagementSystem.Application.Helpers;
 using InvoiceManagementSystem.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
 {
-    public class GetCompanyInfoQueryHandler : IRequestHandler<GetCompanyInfoQuery, Domain.Entities.CompanyInfo>
+    public class GetCompanyInfoQueryHandler : IRequestHandler<GetCompanyInfoQuery, Result<Domain.Entities.CompanyInfo>>
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<GetCompanyInfoQueryHandler> _logger;
@@ -20,20 +21,14 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
             _logger = logger;
         }
 
-        public async Task<Domain.Entities.CompanyInfo> Handle(GetCompanyInfoQuery request, CancellationToken cancellationToken)
+        public async Task<Result<Domain.Entities.CompanyInfo>> Handle(GetCompanyInfoQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetCompanyInfoQueryHandler.Handle - Retreiving company information");
 
             var information = await _context.CompanyInfo.FirstOrDefaultAsync(cancellationToken);
 
-            if (information == null)
-            {
-                _logger.LogError("GetCompanyInfoQueryHandler.Handle - Company information couldn't be found.");
-                return null;
-            }
-
             _logger.LogInformation("GetCompanyInfoQueryHandler.Handle - Company information successfully returned.");
-            return information;
+            return Result<Domain.Entities.CompanyInfo>.Success(information);
         }
     }
 }

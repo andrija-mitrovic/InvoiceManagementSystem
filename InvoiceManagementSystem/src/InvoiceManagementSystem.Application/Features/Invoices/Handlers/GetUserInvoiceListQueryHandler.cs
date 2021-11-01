@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.DTOs;
 using InvoiceManagementSystem.Application.Features.Invoices.Queries;
+using InvoiceManagementSystem.Application.Helpers;
 using InvoiceManagementSystem.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Application.Features.Invoices.Handlers
 {
-    public class GetUserInvoiceListQueryHandler : IRequestHandler<GetUserInvoiceListQuery, List<InvoiceDto>>
+    public class GetUserInvoiceListQueryHandler : IRequestHandler<GetUserInvoiceListQuery, Result<List<InvoiceDto>>>
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -27,7 +28,7 @@ namespace InvoiceManagementSystem.Application.Features.Invoices.Handlers
             _logger = logger;
         }
 
-        public async Task<List<InvoiceDto>> Handle(GetUserInvoiceListQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<InvoiceDto>>> Handle(GetUserInvoiceListQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetUserInvoiceListQueryHandler.Handle - Retrieving invoices.");
 
@@ -36,14 +37,8 @@ namespace InvoiceManagementSystem.Application.Features.Invoices.Handlers
                 .Where(x => x.CreatedBy == request.User)
                 .ToListAsync(cancellationToken);
 
-            if (invoices == null)
-            {
-                _logger.LogError($"GetUserInvoiceListQueryHandler.Handle - No inovices created by {request.User}.");
-                return null;
-            }
-
             _logger.LogInformation("GetUserInvoiceListQueryHandler.Handle - Successfully returned invoices.");
-            return _mapper.Map<List<InvoiceDto>>(invoices);
+            return Result<List<InvoiceDto>>.Success(_mapper.Map<List<InvoiceDto>>(invoices));
         }
     }
 }

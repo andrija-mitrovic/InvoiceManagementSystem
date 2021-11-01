@@ -12,25 +12,25 @@ namespace InvoiceManagementSystem.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCompanyInfo(CancellationToken cancellationToken)
         {
-            return Ok(await Mediator.Send(new GetCompanyInfoQuery(), cancellationToken));
+            return HandleResult(await Mediator.Send(new GetCompanyInfoQuery(), cancellationToken));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCompanyInfo(CompanyInfo companyInfo, CancellationToken cancellationToken)
         {
-            return Ok(await Mediator.Send(new CreateCompanyInfoCommand { CompanyInfo = companyInfo }, cancellationToken));
+            return HandleResult(await Mediator.Send(new CreateCompanyInfoCommand { CompanyInfo = companyInfo }, cancellationToken));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCompanyInfo(int id, CompanyInfo companyInfo, CancellationToken cancellationToken)
         {
-            return Ok(await Mediator.Send(new EditCompanyInfoCommand { Id = id, CompanyInfo = companyInfo }, cancellationToken));
+            return HandleResult(await Mediator.Send(new EditCompanyInfoCommand { Id = id, CompanyInfo = companyInfo }, cancellationToken));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompanyInfo(int id, CancellationToken cancellationToken)
         {
-            return Ok(await Mediator.Send(new DeleteCompanyInfoCommand { Id = id }, cancellationToken));
+            return HandleResult(await Mediator.Send(new DeleteCompanyInfoCommand { Id = id }, cancellationToken));
         }
     }
 }

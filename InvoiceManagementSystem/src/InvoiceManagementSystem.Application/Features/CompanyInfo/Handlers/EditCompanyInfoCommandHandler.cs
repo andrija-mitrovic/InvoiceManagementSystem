@@ -1,17 +1,16 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.Features.CompanyInfo.Command;
+using InvoiceManagementSystem.Application.Helpers;
 using InvoiceManagementSystem.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
 {
-    public class EditCompanyInfoCommandHandler : IRequestHandler<EditCompanyInfoCommand, Unit>
+    public class EditCompanyInfoCommandHandler : IRequestHandler<EditCompanyInfoCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -26,7 +25,7 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
             _logger = logger;
         }
 
-        public async Task<Unit> Handle(EditCompanyInfoCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(EditCompanyInfoCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"EditCompanyInfoCommandHandler.Handle - Editing company information with Id={request.Id}");
 
@@ -35,7 +34,7 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
             if (companyInfo == null)
             {
                 _logger.LogError("EditCompanyInfoCommand.Handle - Company information couldn't be found.");
-                return Unit.Value;
+                return Result<Unit>.Failure("No company information");
             }
 
             _mapper.Map(request.CompanyInfo, companyInfo);
@@ -45,11 +44,11 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
             if (!result)
             {
                 _logger.LogError("EditCompanyInfoCommand.Handle - Failed to update company information.");
-                return Unit.Value;
+                return Result<Unit>.Failure("Failed to update company information");
             }
 
             _logger.LogInformation("EditCompanyInfoCommand.Handle - Successfully update company information.");
-            return Unit.Value;
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }

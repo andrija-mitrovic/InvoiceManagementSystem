@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.Features.Clients.Command;
+using InvoiceManagementSystem.Application.Helpers;
 using InvoiceManagementSystem.Domain.Entities;
 using InvoiceManagementSystem.Infrastructure.Data;
 using MediatR;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
 {
-    public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, Unit>
+    public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -24,7 +25,7 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
             _logger = logger;
         }
 
-        public async Task<Unit> Handle(CreateClientCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("CreateClientCommandHandler.Handle - Adding client");
 
@@ -37,11 +38,11 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
             if (!result)
             {
                 _logger.LogError("CreateClientCommandHandler.Handle - Failed to create client.");
-                return Unit.Value;
+                return Result<Unit>.Failure("Failed to create client.");
             }
 
             _logger.LogInformation("CreateClientCommandHandler.Handle - Client added successfully.");
-            return Unit.Value;
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }

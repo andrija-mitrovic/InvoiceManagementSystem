@@ -1,4 +1,5 @@
 ﻿using InvoiceManagementSystem.Application.Features.CompanyInfo.Command;
+using InvoiceManagementSystem.Application.Helpers;
 using InvoiceManagementSystem.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
 {
-    public class DeleteCompanyInfoCommandHandler : IRequestHandler<DeleteCompanyInfoCommand, Unit>
+    public class DeleteCompanyInfoCommandHandler : IRequestHandler<DeleteCompanyInfoCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<DeleteCompanyInfoCommandHandler> _logger;
@@ -20,7 +21,7 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
             _logger = logger;
         }
 
-        public async Task<Unit> Handle(DeleteCompanyInfoCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(DeleteCompanyInfoCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("DeleteCompanyInfoCommandHandler.Handle - Deleting company information.");
 
@@ -29,7 +30,7 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
             if (companyInfo == null)
             {
                 _logger.LogError("DeleteCompanyInfoCommandHandler.Handle - Couldn't be found company information.");
-                return Unit.Value;
+                return Result<Unit>.Failure("No company information.");
             }
 
             _context.CompanyInfo.Remove(companyInfo);
@@ -39,11 +40,11 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
             if (!result)
             {
                 _logger.LogError("DeleteCompanyInfoCommandHandler.Handle - Failed to delete company information.");
-                return Unit.Value;
+                return Result<Unit>.Failure("Failed to delete company information");
             }
 
             _logger.LogInformation("DeleteCompanyInfoCommandHandler.Handle - Successfully deleted company information.");
-            return Unit.Value;
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }
