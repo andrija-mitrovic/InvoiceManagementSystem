@@ -1,6 +1,5 @@
 ﻿using InvoiceManagementSystem.Application.Features.CompanyInfo.Command;
 using InvoiceManagementSystem.Application.Features.CompanyInfo.Queries;
-using InvoiceManagementSystem.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,15 +15,20 @@ namespace InvoiceManagementSystem.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCompanyInfo(CompanyInfo companyInfo, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateCompanyInfo(CreateCompanyInfoCommand command, CancellationToken cancellationToken)
         {
-            return HandleResult(await Mediator.Send(new CreateCompanyInfoCommand { CompanyInfo = companyInfo }, cancellationToken));
+            return HandleResult(await Mediator.Send(command, cancellationToken));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCompanyInfo(int id, CompanyInfo companyInfo, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateCompanyInfo(int id, EditCompanyInfoCommand command, CancellationToken cancellationToken)
         {
-            return HandleResult(await Mediator.Send(new EditCompanyInfoCommand { Id = id, CompanyInfo = companyInfo }, cancellationToken));
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+
+            return HandleResult(await Mediator.Send(command, cancellationToken));
         }
 
         [HttpDelete("{id}")]

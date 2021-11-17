@@ -1,19 +1,23 @@
 ﻿using FluentValidation.AspNetCore;
 using InvoiceManagementSystem.Application.Features.Invoices.Command;
+using InvoiceManagementSystem.Application.Interfaces;
+using InvoiceManagementSystem.WebAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace InvoiceManagementSystem.WebAPI
+namespace InvoiceManagementSystem.WebAPI.Extensions
 {
-    public static class DependencyInjection
+    public static class ServiceRegistrationExtension
     {
         public static void AddWebAPI(this IServiceCollection services)
         {
             ConfigureController(services);
             ConfigureSwagger(services);
-            ConfigureCors(services);           
+            ConfigureCors(services);
+
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
         }
 
         private static void ConfigureController(IServiceCollection services)

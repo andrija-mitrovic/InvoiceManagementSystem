@@ -29,7 +29,7 @@ namespace InvoiceManagementSystem.WebAPI
                 logger.LogInformation("Program.Main - migration started.");
 
                 var context = services.GetRequiredService<ApplicationDbContext>();
-                var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 await context.Database.MigrateAsync();
                 await ApplicationDbContextSeed.SeedDataAsync(context, userManager, CancellationToken.None, logger);
 

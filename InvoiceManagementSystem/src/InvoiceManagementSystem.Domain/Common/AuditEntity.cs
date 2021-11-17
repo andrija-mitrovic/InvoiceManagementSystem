@@ -2,7 +2,7 @@
 
 namespace InvoiceManagementSystem.Domain.Common
 {
-    public class AuditEntity<T>
+    public abstract class AuditEntity<T>
     {
         public T Id { get; set; }
         public string CreatedBy { get; set; }

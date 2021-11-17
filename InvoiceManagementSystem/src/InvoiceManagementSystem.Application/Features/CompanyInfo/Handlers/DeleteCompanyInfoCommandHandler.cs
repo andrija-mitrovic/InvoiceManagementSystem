@@ -1,6 +1,6 @@
 ﻿using InvoiceManagementSystem.Application.Features.CompanyInfo.Command;
 using InvoiceManagementSystem.Application.Helpers;
-using InvoiceManagementSystem.Infrastructure.Data;
+using InvoiceManagementSystem.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,10 +11,10 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
 {
     public class DeleteCompanyInfoCommandHandler : IRequestHandler<DeleteCompanyInfoCommand, Result<Unit>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly ILogger<DeleteCompanyInfoCommandHandler> _logger;
 
-        public DeleteCompanyInfoCommandHandler(ApplicationDbContext context,
+        public DeleteCompanyInfoCommandHandler(IApplicationDbContext context,
             ILogger<DeleteCompanyInfoCommandHandler> logger)
         {
             _context = context;

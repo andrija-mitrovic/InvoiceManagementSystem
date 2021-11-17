@@ -1,10 +1,8 @@
 ﻿using InvoiceManagementSystem.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +11,7 @@ namespace InvoiceManagementSystem.Infrastructure.Data
     public class ApplicationDbContextSeed
     {
         public static async Task SeedDataAsync(ApplicationDbContext context,
-            UserManager<AppUser> userManager,
+            UserManager<ApplicationUser> userManager,
             CancellationToken cancellationToken,
             ILogger logger)
         {
@@ -21,14 +19,14 @@ namespace InvoiceManagementSystem.Infrastructure.Data
             {
                 logger.LogInformation("ApplicationDbContextSeed.SeedDataAsync - Seeding data started.");
 
-                var users = new List<AppUser>
+                var users = new List<ApplicationUser>
                 {
-                    new AppUser
+                    new ApplicationUser
                     {
                         UserName="admin",
                         Email="admin@gmail.com"
                     },
-                    new AppUser
+                    new ApplicationUser
                     {
                         UserName="andrija",
                         Email="andrija@gmail.com"

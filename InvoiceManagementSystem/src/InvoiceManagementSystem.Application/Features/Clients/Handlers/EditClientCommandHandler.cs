@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.Features.Clients.Command;
 using InvoiceManagementSystem.Application.Helpers;
-using InvoiceManagementSystem.Infrastructure.Data;
+using InvoiceManagementSystem.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,11 +12,11 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
 {
     public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Result<Unit>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly ILogger<EditClientCommandHandler> _logger;
 
-        public EditClientCommandHandler(ApplicationDbContext context,
+        public EditClientCommandHandler(IApplicationDbContext context,
             IMapper mapper,
             ILogger<EditClientCommandHandler> logger)
         {
@@ -37,7 +37,7 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
                 return Result<Unit>.Failure("No client");
             }
 
-            _mapper.Map(request.Client, client);
+            _mapper.Map(request, client);
 
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 

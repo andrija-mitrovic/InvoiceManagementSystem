@@ -15,13 +15,13 @@ namespace InvoiceManagementSystem.WebAPI.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly TokenService _tokenService;
         private readonly ILogger<AccountController> _logger;
 
-        public AccountController(UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager,
+        public AccountController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             TokenService tokenService,
             ILogger<AccountController> logger)
         {

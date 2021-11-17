@@ -1,7 +1,6 @@
-﻿using InvoiceManagementSystem.Domain.Entities;
+﻿using InvoiceManagementSystem.Application.Interfaces;
+using InvoiceManagementSystem.Domain.Entities;
 using InvoiceManagementSystem.Infrastructure.Data;
-using InvoiceManagementSystem.Infrastructure.Interfaces;
-using InvoiceManagementSystem.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +19,7 @@ namespace InvoiceManagementSystem.Infrastructure
             ConfigureIdentity(services);
             ConfigureAuthentication(services, configuration);
 
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
             return services;
         }
@@ -34,12 +33,12 @@ namespace InvoiceManagementSystem.Infrastructure
 
         private static void ConfigureIdentity(IServiceCollection services)
         {
-            services.AddIdentityCore<AppUser>(opt =>
+            services.AddIdentityCore<ApplicationUser>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddSignInManager<SignInManager<AppUser>>();
+            .AddSignInManager<SignInManager<ApplicationUser>>();
         }
 
         private static void ConfigureAuthentication(IServiceCollection services, IConfiguration configuration)

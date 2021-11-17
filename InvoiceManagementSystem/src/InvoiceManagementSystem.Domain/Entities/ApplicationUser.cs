@@ -2,7 +2,7 @@
 
 namespace InvoiceManagementSystem.Domain.Entities
 {
-    public class AppUser : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
     }
 }

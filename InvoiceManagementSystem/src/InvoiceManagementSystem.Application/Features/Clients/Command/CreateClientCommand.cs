@@ -1,11 +1,13 @@
-﻿using InvoiceManagementSystem.Application.DTOs;
-using InvoiceManagementSystem.Application.Helpers;
+﻿using InvoiceManagementSystem.Application.Helpers;
 using MediatR;
 
 namespace InvoiceManagementSystem.Application.Features.Clients.Command
 {
     public class CreateClientCommand : IRequest<Result<Unit>>
     {
-        public ClientDto Client { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
     }
 }

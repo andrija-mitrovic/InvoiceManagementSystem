@@ -2,7 +2,7 @@
 using InvoiceManagementSystem.Application.DTOs;
 using InvoiceManagementSystem.Application.Features.Clients.Queries;
 using InvoiceManagementSystem.Application.Helpers;
-using InvoiceManagementSystem.Infrastructure.Data;
+using InvoiceManagementSystem.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,11 +13,11 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
 {
     public class GetClientByIdQueryHandler : IRequestHandler<GetClientByIdQuery, Result<ClientDto>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly ILogger<GetClientByIdQueryHandler> _logger;
 
-        public GetClientByIdQueryHandler(ApplicationDbContext context,
+        public GetClientByIdQueryHandler(IApplicationDbContext context,
             IMapper mapper,
             ILogger<GetClientByIdQueryHandler> logger)
         {

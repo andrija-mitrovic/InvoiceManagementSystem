@@ -1,5 +1,4 @@
-﻿using InvoiceManagementSystem.Application.DTOs;
-using InvoiceManagementSystem.Application.Features.Clients.Command;
+﻿using InvoiceManagementSystem.Application.Features.Clients.Command;
 using InvoiceManagementSystem.Application.Features.Clients.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
@@ -22,15 +21,20 @@ namespace InvoiceManagementSystem.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateClient(ClientDto clientDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateClient(CreateClientCommand command, CancellationToken cancellationToken)
         {
-            return HandleResult(await Mediator.Send(new CreateClientCommand { Client = clientDto }, cancellationToken));
+            return HandleResult(await Mediator.Send(command, cancellationToken));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateClient(int id, ClientDto clientDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateClient(int id, EditClientCommand command, CancellationToken cancellationToken)
         {
-            return HandleResult(await Mediator.Send(new EditClientCommand { Id = id, Client = clientDto }, cancellationToken));
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+
+            return HandleResult(await Mediator.Send(command, cancellationToken));
         }
 
         [HttpDelete("{id}")]

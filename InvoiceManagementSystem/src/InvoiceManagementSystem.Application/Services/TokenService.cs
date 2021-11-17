@@ -18,7 +18,7 @@ namespace InvoiceManagementSystem.Application.Services
             _config = config;
         }
 
-        public string CreateToken(AppUser user)
+        public string CreateToken(ApplicationUser user)
         {
             var claims = new List<Claim>
             {

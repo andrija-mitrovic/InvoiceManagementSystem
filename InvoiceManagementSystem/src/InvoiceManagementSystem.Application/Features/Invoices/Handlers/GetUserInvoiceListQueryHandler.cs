@@ -2,7 +2,7 @@
 using InvoiceManagementSystem.Application.DTOs;
 using InvoiceManagementSystem.Application.Features.Invoices.Queries;
 using InvoiceManagementSystem.Application.Helpers;
-using InvoiceManagementSystem.Infrastructure.Data;
+using InvoiceManagementSystem.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -15,11 +15,11 @@ namespace InvoiceManagementSystem.Application.Features.Invoices.Handlers
 {
     public class GetUserInvoiceListQueryHandler : IRequestHandler<GetUserInvoiceListQuery, Result<List<InvoiceDto>>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly ILogger<GetUserInvoiceListQueryHandler> _logger;
 
-        public GetUserInvoiceListQueryHandler(ApplicationDbContext context,
+        public GetUserInvoiceListQueryHandler(IApplicationDbContext context,
             IMapper mapper,
             ILogger<GetUserInvoiceListQueryHandler> logger)
         {

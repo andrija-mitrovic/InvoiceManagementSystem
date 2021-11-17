@@ -1,5 +1,6 @@
 using InvoiceManagementSystem.Application;
 using InvoiceManagementSystem.Infrastructure;
+using InvoiceManagementSystem.WebAPI.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.Features.CompanyInfo.Command;
 using InvoiceManagementSystem.Application.Helpers;
-using InvoiceManagementSystem.Infrastructure.Data;
+using InvoiceManagementSystem.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,11 +12,11 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
 {
     public class EditCompanyInfoCommandHandler : IRequestHandler<EditCompanyInfoCommand, Result<Unit>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly ILogger<EditCompanyInfoCommandHandler> _logger;
 
-        public EditCompanyInfoCommandHandler(ApplicationDbContext context,
+        public EditCompanyInfoCommandHandler(IApplicationDbContext context,
             IMapper mapper,
             ILogger<EditCompanyInfoCommandHandler> logger)
         {
@@ -37,7 +37,7 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
                 return Result<Unit>.Failure("No company information");
             }
 
-            _mapper.Map(request.CompanyInfo, companyInfo);
+            _mapper.Map(request, companyInfo);
 
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 

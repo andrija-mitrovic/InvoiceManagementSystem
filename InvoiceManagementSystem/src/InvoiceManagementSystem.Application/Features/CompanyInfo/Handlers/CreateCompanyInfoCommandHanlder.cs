@@ -1,6 +1,7 @@
-﻿using InvoiceManagementSystem.Application.Features.CompanyInfo.Command;
+﻿using AutoMapper;
+using InvoiceManagementSystem.Application.Features.CompanyInfo.Command;
 using InvoiceManagementSystem.Application.Helpers;
-using InvoiceManagementSystem.Infrastructure.Data;
+using InvoiceManagementSystem.Application.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Threading;
@@ -10,13 +11,16 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
 {
     public class CreateCompanyInfoCommandHanlder : IRequestHandler<CreateCompanyInfoCommand, Result<Unit>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
+        private readonly IMapper _mapper;
         private readonly ILogger<CreateCompanyInfoCommandHanlder> _logger;
 
-        public CreateCompanyInfoCommandHanlder(ApplicationDbContext context,
+        public CreateCompanyInfoCommandHanlder(IApplicationDbContext context,
+            IMapper mapper,
             ILogger<CreateCompanyInfoCommandHanlder> logger)
         {
             _context = context;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -24,7 +28,9 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
         {
             _logger.LogInformation("CreateCompanyInfoCommandHanlder.Handle - Adding company information.");
 
-            _context.CompanyInfo.Add(request.CompanyInfo);
+            var company = _mapper.Map<Domain.Entities.CompanyInfo>(request);
+
+            _context.CompanyInfo.Add(company);
 
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 

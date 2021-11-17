@@ -1,6 +1,6 @@
 ﻿using InvoiceManagementSystem.Application.Features.CompanyInfo.Queries;
 using InvoiceManagementSystem.Application.Helpers;
-using InvoiceManagementSystem.Infrastructure.Data;
+using InvoiceManagementSystem.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,10 +11,10 @@ namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Handlers
 {
     public class GetCompanyInfoQueryHandler : IRequestHandler<GetCompanyInfoQuery, Result<Domain.Entities.CompanyInfo>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly ILogger<GetCompanyInfoQueryHandler> _logger;
 
-        public GetCompanyInfoQueryHandler(ApplicationDbContext context,
+        public GetCompanyInfoQueryHandler(IApplicationDbContext context,
             ILogger<GetCompanyInfoQueryHandler> logger)
         {
             _context = context;

@@ -6,11 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InvoiceManagementSystem.Domain\InvoiceManagementSystem.Domain.csproj" />
-    <ProjectReference Include="..\InvoiceManagementSystem.Infrastructure\InvoiceManagementSystem.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

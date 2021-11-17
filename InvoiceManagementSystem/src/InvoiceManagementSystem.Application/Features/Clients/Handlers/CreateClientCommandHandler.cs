@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.Features.Clients.Command;
 using InvoiceManagementSystem.Application.Helpers;
+using InvoiceManagementSystem.Application.Interfaces;
 using InvoiceManagementSystem.Domain.Entities;
-using InvoiceManagementSystem.Infrastructure.Data;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Threading;
@@ -12,11 +12,11 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
 {
     public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, Result<Unit>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly ILogger<CreateClientCommandHandler> _logger;
 
-        public CreateClientCommandHandler(ApplicationDbContext context,
+        public CreateClientCommandHandler(IApplicationDbContext context,
             IMapper mapper,
             ILogger<CreateClientCommandHandler> logger)
         {
@@ -29,7 +29,7 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
         {
             _logger.LogInformation("CreateClientCommandHandler.Handle - Adding client");
 
-            var client = _mapper.Map<Client>(request.Client);
+            var client = _mapper.Map<Client>(request);
 
             _context.Clients.Add(client);
 
