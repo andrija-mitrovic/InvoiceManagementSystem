@@ -1,9 +1,8 @@
-﻿using InvoiceManagementSystem.Application.Helpers;
-using MediatR;
+﻿using MediatR;
 
 namespace InvoiceManagementSystem.Application.Features.Clients.Command
 {
-    public class EditClientCommand : IRequest<Result<Unit>>
+    public class EditClientCommand : IRequest<Unit>
     {
         public int Id { get; set; }
         public string Name { get; set; }

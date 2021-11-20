@@ -1,6 +1,7 @@
 using InvoiceManagementSystem.Application;
 using InvoiceManagementSystem.Infrastructure;
 using InvoiceManagementSystem.WebAPI.Extensions;
+using InvoiceManagementSystem.WebAPI.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,9 +31,10 @@ namespace InvoiceManagementSystem.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<ExceptionMiddleware>();
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "InvoiceManagementSystem.WebAPI v1"));
             }

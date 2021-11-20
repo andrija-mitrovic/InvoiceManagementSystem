@@ -5,12 +5,13 @@ using InvoiceManagementSystem.Application.Interfaces;
 using InvoiceManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
 {
-    public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, Result<Unit>>
+    public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, Unit>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -25,7 +26,7 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
             _logger = logger;
         }
 
-        public async Task<Result<Unit>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateClientCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("CreateClientCommandHandler.Handle - Adding client");
 
@@ -38,11 +39,11 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
             if (!result)
             {
                 _logger.LogError("CreateClientCommandHandler.Handle - Failed to create client.");
-                return Result<Unit>.Failure("Failed to create client.");
+                throw new Exception("Failed to create client.");
             }
 
             _logger.LogInformation("CreateClientCommandHandler.Handle - Client added successfully.");
-            return Result<Unit>.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

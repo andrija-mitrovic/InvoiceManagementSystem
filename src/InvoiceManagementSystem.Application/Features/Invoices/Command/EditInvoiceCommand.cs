@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace InvoiceManagementSystem.Application.Features.Invoices.Command
 {
-    public class CreateInvoiceCommand : IRequest<Unit>
+    public class EditInvoiceCommand : IRequest<Unit>
     {
-        public string InvoiceNumber { get; set; }
+        public int Id { get; set; }
         public string Logo { get; set; }
         public string From { get; set; }
         public string To { get; set; }

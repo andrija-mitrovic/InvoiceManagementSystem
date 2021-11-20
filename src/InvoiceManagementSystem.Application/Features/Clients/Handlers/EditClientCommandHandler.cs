@@ -1,16 +1,18 @@
 ﻿using AutoMapper;
+using InvoiceManagementSystem.Application.Exceptions;
 using InvoiceManagementSystem.Application.Features.Clients.Command;
-using InvoiceManagementSystem.Application.Helpers;
 using InvoiceManagementSystem.Application.Interfaces;
+using InvoiceManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
 {
-    public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Result<Unit>>
+    public class EditClientCommandHandler : IRequestHandler<EditClientCommand, Unit>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -25,7 +27,7 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
             _logger = logger;
         }
 
-        public async Task<Result<Unit>> Handle(EditClientCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(EditClientCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"EditClientCommandHandler.Handle - Editing client with Id={request.Id}.");
 
@@ -33,8 +35,8 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
 
             if (client == null)
             {
-                _logger.LogError($"DeleteClientCommandHandler.Handle - Client with Id={request.Id} couldn't be found.");
-                return Result<Unit>.Failure("No client");
+                _logger.LogError($"EditClientCommandHandler.Handle - Client with Id={request.Id} couldn't be found.");
+                throw new NotFoundException(nameof(Client), request.Id);
             }
 
             _mapper.Map(request, client);
@@ -43,12 +45,12 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
 
             if (!result)
             {
-                _logger.LogError($"DeleteClientCommandHandler.Handle - Failed to update client with Id={request.Id}");
-                return Result<Unit>.Failure("Failed to update client");
+                _logger.LogError($"EditClientCommandHandler.Handle - Failed to update client with Id={request.Id}.");
+                throw new Exception("Failed to update client");
             }
 
-            _logger.LogInformation($"DeleteClientCommandHandler.Handle - Successfully updated client with Id={request.Id}");
-            return Result<Unit>.Success(Unit.Value);
+            _logger.LogInformation($"EditClientCommandHandler.Handle - Successfully updated client with Id={request.Id}.");
+            return Unit.Value;
         }
     }
 }

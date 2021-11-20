@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.DTOs;
+using InvoiceManagementSystem.Application.Exceptions;
 using InvoiceManagementSystem.Application.Features.Clients.Queries;
-using InvoiceManagementSystem.Application.Helpers;
 using InvoiceManagementSystem.Application.Interfaces;
+using InvoiceManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
 {
-    public class GetClientByIdQueryHandler : IRequestHandler<GetClientByIdQuery, Result<ClientDto>>
+    public class GetClientByIdQueryHandler : IRequestHandler<GetClientByIdQuery, ClientDto>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -26,14 +27,20 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
             _logger = logger;
         }
 
-        public async Task<Result<ClientDto>> Handle(GetClientByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ClientDto> Handle(GetClientByIdQuery request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"GetClientByIdQueryHandler.Handle - Retrieved client with Id={request.Id}");
+            _logger.LogInformation($"GetClientByIdQueryHandler.Handle - Retrieved client with Id={request.Id}.");
 
             var client = await _context.Clients.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-            _logger.LogInformation($"GetClientByIdQueryHandler.Handle - Successfully returned client with Id={request.Id}");
-            return Result<ClientDto>.Success(_mapper.Map<ClientDto>(client));
+            if(client == null)
+            {
+                _logger.LogError($"GetClientByIdQueryHandler.Handle - Client with Id={request.Id} couldn't be found.");
+                throw new NotFoundException(nameof(Client), request.Id);
+            }
+
+            _logger.LogInformation($"GetClientByIdQueryHandler.Handle - Successfully returned client with Id={request.Id}.");
+            return _mapper.Map<ClientDto>(client);
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿using InvoiceManagementSystem.Application.Helpers;
-using MediatR;
+﻿using MediatR;
 
 namespace InvoiceManagementSystem.Application.Features.CompanyInfo.Command
 {
-    public class CreateCompanyInfoCommand : IRequest<Result<Unit>>
+    public class CreateCompanyInfoCommand : IRequest<Unit>
     {
         public string Name { get; set; }
         public string PhoneNumber { get; set; }

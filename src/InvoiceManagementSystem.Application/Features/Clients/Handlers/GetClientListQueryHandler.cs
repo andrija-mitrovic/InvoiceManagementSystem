@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.DTOs;
 using InvoiceManagementSystem.Application.Features.Clients.Queries;
-using InvoiceManagementSystem.Application.Helpers;
 using InvoiceManagementSystem.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
 {
-    public class GetClientListQueryHandler : IRequestHandler<GetClientListQuery, Result<List<ClientDto>>>
+    public class GetClientListQueryHandler : IRequestHandler<GetClientListQuery, List<ClientDto>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -27,14 +26,14 @@ namespace InvoiceManagementSystem.Application.Features.Clients.Handlers
             _logger = logger;
         }
 
-        public async Task<Result<List<ClientDto>>> Handle(GetClientListQuery request, CancellationToken cancellationToken)
+        public async Task<List<ClientDto>> Handle(GetClientListQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetClientListQueryHandler.Handle - Retrieving clients.");
 
             var clients = await _context.Clients.ToListAsync(cancellationToken);
 
             _logger.LogInformation("GetClientListQueryHandler.Handle - Successfully returned clients.");
-            return Result<List<ClientDto>>.Success(_mapper.Map<List<ClientDto>>(clients));
+            return _mapper.Map<List<ClientDto>>(clients);
         }
     }
 }

@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.Features.Invoices.Command;
-using InvoiceManagementSystem.Application.Helpers;
 using InvoiceManagementSystem.Application.Interfaces;
 using InvoiceManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace InvoiceManagementSystem.Application.Features.Invoices.Handlers
 {
-    public class CreateInvoiceCommandHandler : IRequestHandler<CreateInvoiceCommand, Result<Unit>>
+    public class CreateInvoiceCommandHandler : IRequestHandler<CreateInvoiceCommand, Unit>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -25,7 +25,7 @@ namespace InvoiceManagementSystem.Application.Features.Invoices.Handlers
             _logger = logger;
         }
 
-        public async Task<Result<Unit>> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("CreateInvoiceCommandHandler.Handle - Adding invoice.");
 
@@ -38,11 +38,11 @@ namespace InvoiceManagementSystem.Application.Features.Invoices.Handlers
             if (!result)
             {
                 _logger.LogError("CreateInvoiceCommandHandler.Handle - Failed to add invoice");
-                return Result<Unit>.Failure("Failed to add invoice");
+                throw new Exception("Failed to add invoice");
             }
 
             _logger.LogInformation("CreateInvoiceCommandHandler.Handle - Successfully added invoice.");
-            return Result<Unit>.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }
