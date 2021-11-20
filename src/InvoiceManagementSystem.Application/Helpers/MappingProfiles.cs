@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InvoiceManagementSystem.Application.DTOs;
 using InvoiceManagementSystem.Application.Features.CompanyInfo.Command;
+using InvoiceManagementSystem.Application.Features.Invoices.Command;
 using InvoiceManagementSystem.Domain.Entities;
 
 namespace InvoiceManagementSystem.Application.Helpers
@@ -16,6 +17,10 @@ namespace InvoiceManagementSystem.Application.Helpers
             CreateMap<InvoiceItemDto, InvoiceItem>();
 
             CreateMap<CreateCompanyInfoCommand, CompanyInfo>();
+
+            CreateMap<EditInvoiceItemCommand, InvoiceItem>()
+                .ForMember(x => x.InvoiceId, y => y.MapFrom(z => z.InvoiceId))
+                .ForMember(x => x.Id, y => y.MapFrom(z => z.InvoiceItemId));
         }
     }
 }

@@ -57,5 +57,16 @@ namespace InvoiceManagementSystem.WebAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}/items/{itemId}")]
+        public async Task<ActionResult<Unit>> UpdateInvoiceItem(int id, int itemId, EditInvoiceItemCommand editInvoiceItemCommand, CancellationToken cancellationToken)
+        {
+            editInvoiceItemCommand.InvoiceId = id;
+            editInvoiceItemCommand.InvoiceItemId = itemId;
+
+            await Mediator.Send(editInvoiceItemCommand, cancellationToken);
+
+            return NoContent();
+        }
     }
 }
