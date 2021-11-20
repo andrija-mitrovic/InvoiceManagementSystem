@@ -32,20 +32,35 @@ namespace InvoiceManagementSystem.WebAPI.Middleware
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, $"ExceptionMiddleware.InvokeAsync - {ex.Message}");
-                context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-                var response = _env.IsDevelopment()
-                    ? new AppException(context.Response.StatusCode, ex.Message, ex.StackTrace?.ToString())
-                    : new AppException(context.Response.StatusCode, "Server Error");
-
-                var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-
-                var json = JsonSerializer.Serialize(response, options);
-
-                await context.Response.WriteAsync(json);
+                await HandleExceptionAsync(context, ex);
             }
+        }
+
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        {
+            _logger.LogError(exception, $"ExceptionMiddleware.InvokeAsync - {exception.Message}");
+
+            switch (exception)
+            {
+                case NotFoundException:
+                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    break;
+                case Exception:
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    break;
+            }
+
+            context.Response.ContentType = "application/json";
+
+            var response = _env.IsDevelopment()
+                ? new AppException(context.Response.StatusCode, exception.Message, exception.StackTrace?.ToString())
+                : new AppException(context.Response.StatusCode, exception.Message);
+
+            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+            var json = JsonSerializer.Serialize(response, options);
+
+            await context.Response.WriteAsync(json);
         }
     }
 }
