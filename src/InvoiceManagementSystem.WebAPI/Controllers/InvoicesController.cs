@@ -38,7 +38,7 @@ namespace InvoiceManagementSystem.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Unit>> DeleteInvoice(int id, EditInvoiceCommand command, CancellationToken cancellationToken)
+        public async Task<ActionResult<Unit>> UpdateInvoice(int id, EditInvoiceCommand command, CancellationToken cancellationToken)
         {
             if (id != command.Id)
             {
@@ -59,12 +59,20 @@ namespace InvoiceManagementSystem.WebAPI.Controllers
         }
 
         [HttpPut("{id}/items/{itemId}")]
-        public async Task<ActionResult<Unit>> UpdateInvoiceItem(int id, int itemId, EditInvoiceItemCommand editInvoiceItemCommand, CancellationToken cancellationToken)
+        public async Task<ActionResult<Unit>> UpdateInvoiceItem(int id, int itemId, EditInvoiceItemCommand command, CancellationToken cancellationToken)
         {
-            editInvoiceItemCommand.InvoiceId = id;
-            editInvoiceItemCommand.InvoiceItemId = itemId;
+            command.InvoiceId = id;
+            command.InvoiceItemId = itemId;
 
-            await Mediator.Send(editInvoiceItemCommand, cancellationToken);
+            await Mediator.Send(command, cancellationToken);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}/items/{itemId}")]
+        public async Task<ActionResult<Unit>> DeleteInvoiceItem(int id, int itemId, CancellationToken cancellationToken)
+        {
+            await Mediator.Send(new DeleteInvoiceItemCommand() { InvoiceId = id, InvoiceItemId = itemId }, cancellationToken);
 
             return NoContent();
         }
